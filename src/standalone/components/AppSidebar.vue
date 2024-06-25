@@ -154,15 +154,15 @@ export default {
           items: [
             {
               component: 'CNavItem',
-              name: 'History Parameter', // Nama menu untuk EAssesment
-              to: '/historyParameters', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilHistory', // Ikonya bisa disesuaikan
-            },
-            {
-              component: 'CNavItem',
               name: 'Planing Kuras Coolant ', // Nama menu untuk EAssesment
               to: '/planSchedule', // Path yang dituju saat menu EAssesment diklik
               icon: 'cilCalendar', // Ikonya bisa disesuaikan
+            },
+            {
+              component: 'CNavItem',
+              name: 'History Coolant', // Nama menu untuk EAssesment
+              to: '/historyCoolant', // Path yang dituju saat menu EAssesment diklik
+              icon: 'cilHistory', // Ikonya bisa disesuaikan
             },
             {
               component: 'CNavItem',

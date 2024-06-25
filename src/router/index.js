@@ -58,15 +58,17 @@ const routes = [
         name: 'contoh', // Nama submenu 2
         component: () => import('@/views/contoh.vue'),
       },
-      {
-        path: '/historyParameters',
-        name: 'HistoryParameters',
-        component: () => import('@/views/HistoryParameters.vue'),
-      },
+
       {
         path: '/planSchedule',
         name: 'PlanSchedule',
         component: () => import('@/views/PlanSchedule.vue'),
+      },
+
+      {
+        path: '/historyCoolant',
+        name: 'HistoryCoolant',
+        component: () => import('@/views/HistoryCoolant.vue'),
       },
 
       {

@@ -44,7 +44,7 @@
             >
             </Multiselect>
           </div>
-          <label class="form-label" for="selectedDate">Planing Date</label>
+          <label class="form-label" for="selectedDate">Tanggal Kuras</label>
           <div class="input-group">
             <input
               class="form-control"
@@ -137,7 +137,7 @@
             v-model="editedSchedule.machine_nm"
             disabled
           />
-          <label class="form-label" for="selectedDate">Planing Date</label>
+          <label class="form-label" for="selectedDate">Tanggal</label>
           <div class="input-group">
             <input
               class="form-control"
@@ -242,7 +242,7 @@
   </div>
   <div class="container-fluid">
     <div class="card mt-3 p-2 text-center">
-      <div class="row justify-content-center p-3">
+      <div class="row justify-content-center p-3 z-ind">
         <div class="card col-6">
           <div class="row">
             <div class="col">
@@ -293,12 +293,12 @@
             data-bs-toggle="modal"
             data-bs-target="#modalScheduleKuras"
           >
-            <i class="fas fa-plus"></i> Add Schedule
+            <i class="fas fa-plus"></i> Tambah Master Schedule
           </button>
         </div>
       </div>
       <div class="mt-3">
-        <h3>History Pengurasan</h3>
+        <h3>Master Schedule</h3>
       </div>
       <nav aria-label="Page navigation" class="mt-2">
         <ul class="pagination justify-content-center mb-0">
@@ -329,7 +329,7 @@
           </li>
         </ul>
       </nav>
-      <table class="table custom-table table-bordered mt-1">
+      <table class="table custom-table tb-emp table-bordered mt-1">
         <thead>
           <tr>
             <th>No</th>
@@ -524,6 +524,7 @@ export default {
         this.selectedShift = null
         this.selectedPeriodic = ''
         this.selectedTime = null
+        this.$store.dispatch('fetchGeneratePlanKuras')
       } catch (error) {
         console.error('Error:', error.message)
       }
@@ -554,6 +555,7 @@ export default {
         }
         console.log('payload', editDataKuras)
         this.$store.dispatch('actionEditSchedule', editDataKuras)
+
         this.editedSchedule = {
           line_nm: null,
           machine_nm: null,
@@ -562,6 +564,7 @@ export default {
           period_nm: null,
           shift: null,
         }
+        this.$store.dispatch('fetchGeneratePlanKuras')
       } catch (error) {
         console.error('Error:', error.message)
       }
@@ -614,6 +617,7 @@ export default {
   mounted() {
     this.fetchLines()
     this.$store.dispatch('fetchSchedules') // Fetch schedules on mount
+    this.$store.dispatch('fetchGeneratePlanKuras')
   },
 }
 </script>
@@ -621,6 +625,10 @@ export default {
 <style>
 .sz-dw {
   height: 50%;
+}
+.z-ind {
+  z-index: 2;
+  position: relative;
 }
 .sz-hst {
   height: 40px !important;
@@ -640,5 +648,12 @@ input-group .flex-grow-1 {
   font-weight: bold;
   color: #f54453;
   font-size: 14px;
+}
+.tb-emp th {
+  background-color: rgb(198, 240, 240);
+  height: 50px !important;
+}
+.table-bordered {
+  border: 1px solid black;
 }
 </style>

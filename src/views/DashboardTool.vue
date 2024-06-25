@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid">
     <div class="card p-2">
+      <div class="card-header">
+        <h2 class="text-center">Shift : {{ currenthShift }}</h2>
+      </div>
       <div class="row mt-3" style="text-align: center">
         <h3 for="">Reservasi Tool Baru</h3>
         <div class="col-3">
@@ -61,7 +64,7 @@
           <div class="card">
             <apexchart
               type="line"
-              width="700"
+              width="100%"
               height="250"
               :options="lineChartOptions"
               :series="lineChartSeries"
@@ -116,7 +119,7 @@
           <div class="card">
             <apexchart
               type="line"
-              width="700"
+              width="100%"
               height="250"
               :options="regLineChartOptions"
               :series="regLineChartSeries"
@@ -142,6 +145,7 @@ export default {
   data() {
     const currentMonth = moment().format('MMMM YYYY')
     return {
+      currenthShift: '',
       drill: null,
       reamer: null,
       tap: null,
@@ -378,6 +382,7 @@ export default {
       'getGrafikReservasi',
       'getRegrinding',
       'getGrafikRegrinding',
+      'getCurrentShift',
     ]),
   },
   watch: {
@@ -488,6 +493,7 @@ export default {
     },
   },
   created() {
+    this.getShift()
     this.$store.dispatch('ActionGetReservasi')
     if (!this.getGrafikReservasi || this.getGrafikReservasi.length === 0) {
       this.$store.dispatch('ActionGetGrafikReservasi')
@@ -498,6 +504,10 @@ export default {
     }
   },
   methods: {
+    getShift() {
+      this.currenthShift = this.getCurrentShift
+      console.log('currenthShift', this.currenthShift)
+    },
     async submitData(type) {
       try {
         const reservasiDate = moment().format('YYYY-MM-DD')

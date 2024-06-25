@@ -1,197 +1,186 @@
 <template>
-  <div class="container-fluid">
-    <div class="card mt-3" style="z-index: 1">
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <label class="form-label" for="selectedLine">Line</label>
-            <div class="input-group">
-              <select
-                class="form-select sz-up"
-                v-model="selectedLine"
-                @change="onLineChange($event)"
+  <div class="card mt-3" style="z-index: 1">
+    <div class="card-header">
+      <h5 class="card-title text-center"><strong>History Coolant</strong></h5>
+    </div>
+    <div class="card-body">
+      <div class="row gx-3">
+        <div class="col-md-3">
+          <label class="form-label" for="selectedLine">Line</label>
+          <div class="input-group">
+            <select
+              class="form-select sz-up"
+              v-model="selectedLine"
+              @change="onLineChange($event)"
+            >
+              <option
+                v-for="line in getLineNames"
+                :key="line.line_id"
+                :value="line.line_id"
               >
-                <option
-                  v-for="line in getLineNames"
-                  :key="line.line_id"
-                  :value="line.line_id"
-                >
-                  {{ line.line_nm }}
-                </option>
-              </select>
-            </div>
+                {{ line.line_nm }}
+              </option>
+            </select>
           </div>
-          <div class="col">
-            <label class="form-label" for="selectedMachines">Mesin</label>
-            <div class="input-group">
-              <Multiselect
-                v-model="selectedMachines"
-                :options="getMachinesNames"
-                :multiple="true"
-                :disabled="!selectedLine"
-                track-by="machine_id"
-                label="machine_nm"
-                placeholder="Pilih mesin..."
-                :taggable="true"
-                @tag="addTag"
-              >
-              </Multiselect>
-            </div>
-          </div>
-          <div class="col">
-            <label class="form-label" for="selectedLine">Parameter</label>
-            <div class="input-group">
-              <select
-                class="form-select sz-up"
-                v-model="selectedParam"
-                @change="fetchParams"
-              >
-                <option
-                  v-for="param in paramNames"
-                  :key="param"
-                  :value="param.param_id"
-                >
-                  {{ param.param_nm }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col">
-            <label class="form-label" for="selectedDate">Start Date</label>
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control sz-up"
-                ref="datePickerStartDate"
-                v-model="selectedStartDate"
-                placeholder="Pilih tanggal..."
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary sz-up"
-                  type="button"
-                  @click="showDatePicker('datePickerStartDate', 'start')"
-                >
-                  <span class="fa fa-calendar"></span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col">
-            <label class="form-label" for="selectedDate">End Date</label>
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control sz-up"
-                ref="datePickerEndDate"
-                v-model="selectedEndDate"
-                placeholder="Pilih tanggal..."
-                @change="fetchData"
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary sz-up"
-                  type="button"
-                  @click="showDatePicker('datePickerEndDate', 'end')"
-                >
-                  <span class="fa fa-calendar"></span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
+        <div class="col-md-3">
+          <label class="form-label" for="selectedMachines">Mesin</label>
+          <div class="input-group">
+            <Multiselect
+              v-model="selectedMachines"
+              :options="getMachinesNames"
+              :multiple="true"
+              :disabled="!selectedLine"
+              track-by="machine_id"
+              label="machine_nm"
+              placeholder="Pilih mesin..."
+              :taggable="true"
+              @tag="addTag"
+            >
+            </Multiselect>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="selectedLine">Parameter</label>
+          <div class="input-group">
+            <select
+              class="form-select sz-up"
+              v-model="selectedParam"
+              @change="fetchParams"
+            >
+              <option
+                v-for="param in paramNames"
+                :key="param"
+                :value="param.param_id"
+              >
+                {{ param.param_nm }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="selectedDate">Mulai</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control sz-up"
+              ref="datePickerStartDate"
+              v-model="selectedStartDate"
+              placeholder="Pilih tanggal..."
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary sz-up"
+                type="button"
+                @click="showDatePicker('datePickerStartDate', 'start')"
+              >
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+          <label class="form-label" for="selectedDate">Sampai</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control sz-up"
+              ref="datePickerEndDate"
+              v-model="selectedEndDate"
+              placeholder="Pilih tanggal..."
+              @change="fetchData"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary sz-up"
+                type="button"
+                @click="showDatePicker('datePickerEndDate', 'end')"
+              >
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div v-if="results.length > 0" class="container-fluid">
+  <div v-if="mergedResults.length > 0" class="card p-2 mt-3">
+    <table class="table custom-table tb-emp table-bordered mt-1">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Line</th>
+          <th>Mesin</th>
+          <th>Tanggal Check</th>
+          <th
+            v-if="
+              paramNames.length > 0 && selectedParam === paramNames[0].param_id
+            "
+          >
+            {{ paramNames[0].param_nm }}
+          </th>
+          <th
+            v-if="
+              paramNames.length > 1 && selectedParam === paramNames[1].param_id
+            "
+          >
+            {{ paramNames[1].param_nm }}
+          </th>
+          <th>Terakhir Kuras</th>
+          <th>Alasan Kuras</th>
+
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(result, index) in mergedResults" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ result.line_nm }}</td>
+          <td>{{ result.machine_nm }}</td>
+          <td>{{ result.start_date }}</td>
+          <td v-if="selectedParam === paramNames[0].param_id">
+            {{ result.Konsentrasi }}
+          </td>
+          <td v-if="selectedParam === paramNames[1].param_id">
+            {{ result.PH }}
+          </td>
+          <td>{{ result.last_krs }}</td>
+          <td>{{ result.reason }}</td>
+          <td v-html="result.status"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    v-if="
+      chartSeriesConcentration.length > 0 &&
+      selectedParam === paramNames[0].param_id
+    "
+  >
     <div class="card mt-3">
-      <table class="table custom-table table-bordered mt-1">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Line</th>
-            <th>Mesin</th>
-            <th>Tanggal</th>
-            <th
-              v-if="
-                paramNames.length > 0 &&
-                selectedParam === paramNames[0].param_id
-              "
-            >
-              {{ paramNames[0].param_nm }}
-            </th>
-            <th
-              v-if="
-                paramNames.length > 1 &&
-                selectedParam === paramNames[1].param_id
-              "
-            >
-              {{ paramNames[1].param_nm }}
-            </th>
-
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(result, index) in results" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ result.line_nm }}</td>
-            <td>{{ result.machine }}</td>
-            <td>{{ result.start_date }}</td>
-            <td v-if="selectedParam === paramNames[0].param_id">
-              {{ result.Konsentrasi }}
-            </td>
-            <td v-if="selectedParam === paramNames[1].param_id">
-              {{ result.PH }}
-            </td>
-            <td v-html="result.status"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div
-      v-if="
-        chartSeriesConcentration.length > 0 &&
-        selectedParam === paramNames[0].param_id
-      "
-    >
-      <div class="card mt-3">
-        <div class="card-body">
-          <apexchart
-            :options="chartOptionsConcentration"
-            :series="chartSeriesConcentration"
-            type="line"
-            height="400"
-          />
-        </div>
+      <div class="card-body">
+        <apexchart
+          :options="chartOptionsConcentration"
+          :series="chartSeriesConcentration"
+          type="line"
+          height="400"
+        />
       </div>
     </div>
+  </div>
 
-    <div
-      v-if="
-        chartSeriesPH.length > 0 && selectedParam === paramNames[1].param_id
-      "
-    >
-      <div class="card mt-2">
-        <div class="card-body">
-          <apexchart
-            :options="chartOptionsPH"
-            :series="chartSeriesPH"
-            type="line"
-            height="400"
-          />
-        </div>
+  <div
+    v-if="chartSeriesPH.length > 0 && selectedParam === paramNames[1].param_id"
+  >
+    <div class="card mt-2">
+      <div class="card-body">
+        <apexchart
+          :options="chartOptionsPH"
+          :series="chartSeriesPH"
+          type="line"
+          height="400"
+        />
       </div>
-    </div>
-
-    <div class="mt-5 text-center" v-else>
-      <h2><strong>No Data Displayed</strong></h2>
     </div>
   </div>
 </template>
@@ -229,14 +218,15 @@ export default {
       chartOptionsPH: {},
       results: [],
       pollingInterval: null,
+      mergedResults: [],
     }
   },
   computed: {
-    ...mapGetters(['getLineNames', 'getMachinesNames']),
+    ...mapGetters(['getLineNames', 'getMachinesNames', 'getDataHistoryKuras']),
   },
   watch: {
-    selectedMachines: 'fetchData',
-    selectedEndDate: 'fetchData',
+    results: 'mergeData', // Memanggil mergeData ketika results berubah
+    getDataHistoryKuras: 'mergeData', // Memanggil mergeData ketika getDataHistoryKuras berubah
   },
   mounted() {
     this.fetchLines()
@@ -299,11 +289,14 @@ export default {
         const machineIds = this.selectedMachines.map(
           (machine) => machine.machine_id,
         )
+        const machineNames = this.selectedMachines.map(
+          (machine) => machine.machine_nm,
+        )
         if (machineIds.length === 0) {
           alert('No machines selected')
           return
         }
-
+        this.$store.dispatch('ActionHistoryKuras', machineNames)
         const response = await axios.get(`${API_URL}/grafik/get`, {
           params: {
             startDate: this.selectedStartDate,
@@ -314,7 +307,7 @@ export default {
         })
 
         const responseData = response.data.data
-        console.log('responseData', responseData)
+        // console.log('responseData', responseData)
 
         if (
           responseData &&
@@ -338,7 +331,7 @@ export default {
                 if (!groupedData[tanggal]) {
                   groupedData[tanggal] = {
                     line_nm: lineName,
-                    machine: machineName,
+                    machine_nm: machineName,
                     start_date: tanggal,
                     Konsentrasi: '-',
                     PH: '-',
@@ -366,6 +359,14 @@ export default {
               this.results.push(data)
             })
           })
+          // Urutkan this.results berdasarkan start_date dari yang terbaru ke yang terlama
+          this.results.sort((a, b) => {
+            // Mengonversi tanggal dari string ke Date untuk membandingkan
+            const dateA = new Date(a.start_date)
+            const dateB = new Date(b.start_date)
+            // Mengurutkan dari yang terbaru ke yang terlama
+            return dateB - dateA
+          })
 
           // Set summary status based on all machines' status
           const allOk = this.results.every(
@@ -385,6 +386,47 @@ export default {
         }
       } catch (error) {
         console.error('Error fetching data:', error)
+      }
+    },
+    mergeData() {
+      if (this.results.length === 0) {
+        // Mengisi mergedResults dengan data dari getDataHistoryKuras jika results kosong
+        this.mergedResults = this.getDataHistoryKuras.map((historyItem) => {
+          return {
+            line_nm: historyItem.line_nm || '-', // Nama line dari historyItem
+            machine_nm: historyItem.machine_nm || '-', // Nama mesin dari historyItem
+            start_date: historyItem.start_date || '-', // Tanggal dari historyItem
+            Konsentrasi: '-', // Konsentrasi default
+            PH: '-', // PH default
+            last_krs: historyItem.last_krs || '-', // Data last_krs dari historyItem
+            reason: historyItem.reason_plan || '-', // Data reason_plan dari historyItem atau '-'
+            status: historyItem.status || '-', // Status default
+          }
+        })
+      } else {
+        // Variabel untuk melacak mesin yang sudah diisi last_krs
+        const processedMachines = new Set()
+
+        // Menggabungkan data dari results dengan data dari getDataHistoryKuras jika results tidak kosong
+        this.mergedResults = this.results.map((result, index) => {
+          // Mencari data yang cocok di getDataHistoryKuras berdasarkan machine_nm
+          const history = this.getDataHistoryKuras.find(
+            (historyItem) => historyItem.machine_nm === result.machine_nm,
+          )
+
+          // Tentukan nilai last_krs: hanya isi di baris pertama untuk setiap mesin
+          let lastKrsValue = '-'
+          if (history && !processedMachines.has(result.machine_nm)) {
+            lastKrsValue = history.last_krs || '-'
+            processedMachines.add(result.machine_nm) // Tandai mesin ini sudah diproses
+          }
+
+          return {
+            ...result,
+            last_krs: lastKrsValue, // Menetapkan nilai last_krs yang telah ditentukan
+            reason: history ? history.reason_plan || '-' : '-', // Menambahkan reason dari history jika ada atau '-' jika reason_plan kosong
+          }
+        })
       }
     },
 
@@ -641,5 +683,17 @@ export default {
 }
 .sz-up {
   height: 40px;
+}
+.tb-emp th {
+  background-color: rgb(198, 240, 240); /* Warna latar belakang th */
+  height: 50px !important;
+  text-align: center;
+  vertical-align: middle;
+}
+.tb-emp th,
+.tb-emp td {
+  border: 1px solid black; /* Batas tepi untuk sel-sel dalam tabel */
+  text-align: center;
+  padding: 8px; /* Atur jarak antara konten dan batas tepi */
 }
 </style>
