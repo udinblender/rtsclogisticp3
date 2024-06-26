@@ -125,10 +125,9 @@
           >
             {{ paramNames[1].param_nm }}
           </th>
+          <th>Status Coolant</th>
           <th>Terakhir Kuras</th>
           <th>Alasan Kuras</th>
-
-          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -143,9 +142,9 @@
           <td v-if="selectedParam === paramNames[1].param_id">
             {{ result.PH }}
           </td>
+          <td v-html="result.status"></td>
           <td>{{ result.last_krs }}</td>
           <td>{{ result.reason }}</td>
-          <td v-html="result.status"></td>
         </tr>
       </tbody>
     </table>
@@ -332,7 +331,7 @@ export default {
                   groupedData[tanggal] = {
                     line_nm: lineName,
                     machine_nm: machineName,
-                    start_date: tanggal,
+                    start_date: moment(tanggal).format('DD-MM-YYYY'), // Format tanggal,
                     Konsentrasi: '-',
                     PH: '-',
                     status: '',
@@ -404,8 +403,9 @@ export default {
           }
         })
       } else {
-        // Variabel untuk melacak mesin yang sudah diisi last_krs
-        const processedMachines = new Set()
+        // Variabel untuk melacak mesin yang sudah diisi last_krs dan reason
+        const processedMachinesForLastKrs = new Set()
+        const processedMachinesForReason = new Set()
 
         // Menggabungkan data dari results dengan data dari getDataHistoryKuras jika results tidak kosong
         this.mergedResults = this.results.map((result, index) => {
@@ -416,15 +416,23 @@ export default {
 
           // Tentukan nilai last_krs: hanya isi di baris pertama untuk setiap mesin
           let lastKrsValue = '-'
-          if (history && !processedMachines.has(result.machine_nm)) {
+          if (history && !processedMachinesForLastKrs.has(result.machine_nm)) {
             lastKrsValue = history.last_krs || '-'
-            processedMachines.add(result.machine_nm) // Tandai mesin ini sudah diproses
+            processedMachinesForLastKrs.add(result.machine_nm) // Tandai mesin ini sudah diproses untuk last_krs
+          }
+
+          // Tentukan nilai reason: hanya isi di baris pertama untuk setiap mesin
+          let reasonValue = '-'
+          if (history && !processedMachinesForReason.has(result.machine_nm)) {
+            reasonValue = history.reason_plan || '-'
+            processedMachinesForReason.add(result.machine_nm) // Tandai mesin ini sudah diproses untuk reason
           }
 
           return {
             ...result,
+
             last_krs: lastKrsValue, // Menetapkan nilai last_krs yang telah ditentukan
-            reason: history ? history.reason_plan || '-' : '-', // Menambahkan reason dari history jika ada atau '-' jika reason_plan kosong
+            reason: reasonValue, // Menetapkan nilai reason yang telah ditentukan
           }
         })
       }

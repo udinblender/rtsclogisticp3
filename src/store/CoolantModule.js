@@ -98,7 +98,7 @@ const actions = {
         `${API_URL}/schedules/edit/${scheduleId}`,
         payload,
       )
-      if (response.status === 201) {
+      if (response.status === 200) {
         alert('Berhasil Mengedit Jadwal')
       }
       commit('setSchedules', response.data.data)

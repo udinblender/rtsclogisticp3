@@ -104,12 +104,10 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <div class="row">
+      <div class="card-header">
         <h1 class="text-center">Schedule Kuras Bulan : {{ currenthMonth }}</h1>
       </div>
-      <!--row-->
-
-      <div class="table-responsive">
+      <div class="table-responsive mt-2">
         <div class="row">
           <div class="col">
             <nav aria-label="Page navigation">
@@ -168,6 +166,7 @@
               <th style="width: 5%">No</th>
               <th style="width: 10%">Line</th>
               <th style="width: 13%">Mesin</th>
+              <th style="width: 10%">Periodik</th>
               <th style="width: 10%">Plan</th>
               <th style="width: 12%">Shift</th>
               <th style="width: 15%">Actual</th>
@@ -185,6 +184,7 @@
               <td>{{ (currentPage - 1) * pageSize + index + 1 }}</td>
               <td>{{ kuras.line_nm }}</td>
               <td>{{ kuras.machine_nm }}</td>
+              <td>{{ kuras.period_val }} {{ kuras.period_nm }}</td>
               <td>{{ kuras.plan_dt }}</td>
               <td>
                 <select v-model="kuras.shift" class="form-select">
@@ -419,9 +419,9 @@ export default {
       this.statusKuras = data.map((kuras) => kuras.status || '')
       this.isSaved = data.map((kuras) => kuras.is_saved || false)
 
-      console.log('actualDates:', this.actualDates)
-      console.log('statusKuras:', this.statusKuras)
-      console.log('isSaved:', this.isSaved)
+      // console.log('actualDates:', this.actualDates)
+      // console.log('statusKuras:', this.statusKuras)
+      // console.log('isSaved:', this.isSaved)
     },
     saveSchedule(index) {
       if (
@@ -681,5 +681,6 @@ export default {
   text-align: center;
   padding: 8px; /* Atur jarak antara konten dan batas tepi */
 }
+
 /* Pastikan penyesuaian CSS diterapkan dengan benar */
 </style>

@@ -43,6 +43,7 @@ const getters = {
         is_saved: correspondingSchedule
           ? correspondingSchedule.is_saved
           : false,
+
         // Field lain sesuai kebutuhan
       }
     })
@@ -94,7 +95,7 @@ const actions = {
     try {
       const response = await axios.get(`${API_URL}/planMonth/get`)
       commit('setPlanKuras', response.data.data)
-      // console.log(response.data.data)
+      // console.log('setPlanKuras', response.data.data)
     } catch (error) {
       console.error('Error fetching plan kuras:', error)
     }
