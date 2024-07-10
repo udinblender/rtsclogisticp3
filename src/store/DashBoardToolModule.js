@@ -43,7 +43,7 @@ const mutations = {
 
 const actions = {
   async ActionSubmitData(_, { endpoint, payload }) {
-    console.log('payload', payload)
+    // console.log('payload', payload)
     try {
       const response = await axios.post(`${API_URL}/${endpoint}`, payload)
       if (response.status === 201) {
@@ -61,11 +61,9 @@ const actions = {
     // console.log('payload', payload)
     try {
       const response = await axios.get(`${API_URL}/reservasi/get`, {
-        params: {
-          shift: payload,
-        },
+        params: { shift: payload },
       })
-      console.log(response.data.data)
+      // console.log(response.data.data)
       commit('setReservasi', response.data.data)
       // console.log('setReservasi', response.data.data)
     } catch (error) {
@@ -99,7 +97,7 @@ const actions = {
   async ActionGetGrafikRegrinding({ commit }) {
     try {
       const response = await axios.get(`${API_URL}/grafikregrinding/get`)
-      console.log(response.data.data)
+      // console.log(response.data.data)
       commit('setGrafikRegrinding', response.data.data)
     } catch (error) {
       console.error('Error fetching regrinding:', error)

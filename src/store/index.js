@@ -5,30 +5,36 @@ import EmployeeModule from './EmployeeModule'
 import AbsensiModule from './AbsensiModule'
 import PlanKurasModule from './PlanKurasModule'
 import DashBoardToolModule from './DashBoardToolModule'
+import ToolDrawingModule from './ToolDrawingModule'
+
+import focusInputModule from './TMS/focusInput.module'
 
 export default createStore({
-  state: {
-    sidebarVisible: '',
-    sidebarUnfoldable: false,
-  },
-  mutations: {
-    toggleSidebar(state) {
-      state.sidebarVisible = !state.sidebarVisible
+    state: {
+        sidebarVisible: '',
+        sidebarUnfoldable: false,
     },
-    toggleUnfoldable(state) {
-      state.sidebarUnfoldable = !state.sidebarUnfoldable
+    mutations: {
+        toggleSidebar(state) {
+            state.sidebarVisible = !state.sidebarVisible
+        },
+        toggleUnfoldable(state) {
+            state.sidebarUnfoldable = !state.sidebarUnfoldable
+        },
+        updateSidebarVisible(state, payload) {
+            state.sidebarVisible = payload.value
+        },
     },
-    updateSidebarVisible(state, payload) {
-      state.sidebarVisible = payload.value
+    actions: {},
+    modules: {
+        EmployeeModule,
+        AbsensiModule,
+        mappingModule,
+        CoolantModule,
+        PlanKurasModule,
+        DashBoardToolModule,
+        ToolDrawingModule,
+
+        focusInputModule,
     },
-  },
-  actions: {},
-  modules: {
-    EmployeeModule,
-    AbsensiModule,
-    mappingModule,
-    CoolantModule,
-    PlanKurasModule,
-    DashBoardToolModule,
-  },
 })

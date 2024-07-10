@@ -535,6 +535,7 @@ export default {
           console.log('Please select an item to edit.')
           return
         }
+
         const scheduleId = this.getSchedules[this.selectedDataIndex].schedule_id
         const lineNm = this.editedSchedule.line_nm
         const linId = this.editedSchedule.line_id
@@ -542,18 +543,19 @@ export default {
         const machines = this.editedSchedule.machine_nm
         const planingDate = this.editedSchedule.last_krs
         const shift = this.editedSchedule.shift
+        const editLastKrs = moment(planingDate).format('YYYY-MM-DD')
         const editDataKuras = {
           schedule_id: scheduleId,
           line_nm: lineNm,
           line_id: linId,
           machines: machines,
           machine_id: machineId,
-          last_krs: planingDate,
+          last_krs: editLastKrs,
           shift: shift,
           periodVal: this.editedSchedule.period_val,
           periodNm: this.editedSchedule.period_nm,
         }
-        console.log('payload', editDataKuras)
+        console.log('editedDataKuras', editDataKuras)
         this.$store.dispatch('actionEditSchedule', editDataKuras)
 
         this.editedSchedule = {
