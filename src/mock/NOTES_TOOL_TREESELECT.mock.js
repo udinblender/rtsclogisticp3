@@ -1,7 +1,7 @@
 const MOCK_TOOL_NOTES_TREESELECT = [{
         id: 1,
         label: 'PATAH',
-        selected: true,
+        selected: false,
     },
     {
         id: 2,

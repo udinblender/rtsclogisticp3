@@ -85,6 +85,7 @@
         <template
           v-else-if="location == 'Cam Shaft' || location == 'Crank Shaft' || location == 'Cylinder Head' || location == 'Cylinder Block'">
           <button class="btn btn-info" @click="showModal('toolChangeModal')">Tool Change</button> .
+          <button class="btn btn-secondary" @click="showModal('toolUsedModal')">Tool Used</button> .
           <button class="btn btn-success" @click="transferConfirmation">Transfer</button>
         </template>
         <!-- <button class="btn btn-info" @click="showModal('toolChangeModal')">Tool Change</button> .
@@ -98,6 +99,7 @@
   <ToolChangeAction :modalShow="toolChangeModal" @modalShow="(state) => dismissModal('toolChangeModal')" />
   <SettingAction :modalShow="settingModal" @modalShow="(state) => dismissModal('settingModal')" />
   <RegringingAction :modalShow="regrindingModal" @modalShow="(state) => dismissModal('regrindingModal')" />
+  <ToolUsedAction :modalShow="toolUsedModal" @modalShow="(state) => dismissModal('toolUsedModal')" />
 </template>
 <script>
 import { ACTION_FOCUS_INPUT } from '@/store/TMS/focusInput.module'
@@ -105,6 +107,7 @@ import { ACTION_FOCUS_INPUT } from '@/store/TMS/focusInput.module'
 import ToolChangeAction from '@/components/TMS/Modals/ToolChangeAction.vue'
 import SettingAction from '../Modals/SettingAction.vue'
 import RegringingAction from '../Modals/RegringingAction.vue'
+import ToolUsedAction from '../Modals/ToolUsedAction.vue'
 
 export default {
   name: "CardToolStatus",
@@ -112,7 +115,8 @@ export default {
     return {
       toolChangeModal: false,
       settingModal: false,
-      regrindingModal: false
+      regrindingModal: false,
+      toolUsedModal: false
     }
   },
   methods: {
@@ -154,7 +158,8 @@ export default {
   components: {
     ToolChangeAction,
     SettingAction,
-    RegringingAction
+    RegringingAction,
+    ToolUsedAction
   },
   props: {
     is_footer: {
