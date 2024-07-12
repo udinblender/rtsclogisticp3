@@ -1,17 +1,37 @@
 <template>
-  <CSidebar class="bg-white" position="fixed" :unfoldable="sidebarUnfoldable" :visible="sidebarVisible" @visible-change="(event) =>
-    $store.commit({
-      type: 'updateSidebarVisible',
-      value: event,
-    })
-    ">
+  <CSidebar
+    class="bg-white"
+    position="fixed"
+    :unfoldable="sidebarUnfoldable"
+    :visible="sidebarVisible"
+    @visible-change="
+      (event) =>
+        $store.commit({
+          type: 'updateSidebarVisible',
+          value: event,
+        })
+    "
+  >
     <CSidebarBrand>
-      <img src="../assets/brand/Toyota_logo.png" class="img-fluid sidebar-brand-full" width="200" height="200" />
-      <img src="../assets/brand/Toyota_logo.png" class="sidebar-brand-narrow" width="36" height="10" />
+      <img
+        src="../assets/brand/Toyota_logo.png"
+        class="img-fluid sidebar-brand-full"
+        width="200"
+        height="200"
+      />
+      <img
+        src="../assets/brand/Toyota_logo.png"
+        class="sidebar-brand-narrow"
+        width="36"
+        height="10"
+      />
     </CSidebarBrand>
     <AppSidebarNav v-bind:nav="nav" />
-    <CSidebarToggler id="SidebarToggler" class="d-none d-lg-flex submenu-background"
-      @click="$store.commit('toggleUnfoldable')" />
+    <CSidebarToggler
+      id="SidebarToggler"
+      class="d-none d-lg-flex submenu-background"
+      @click="$store.commit('toggleUnfoldable')"
+    />
   </CSidebar>
 </template>
 
@@ -149,11 +169,12 @@ export default {
             },
             {
               component: 'CNavItem',
-              name: 'Master Data',
-              to: '/Tool-Management-System',
-              // icon: 'cilTruck',
+              name: 'Master Drawing',
+              to: '/tool/drawing',
+              // icon: 'cilMap',
               parentId: 'ROOT',
             },
+
             {
               component: 'CNavItem',
               name: 'Reservasi & Regrinding',
@@ -186,6 +207,20 @@ export default {
               name: 'Master Schedule', // Nama menu untuk EAssesment
               to: '/ScheduleKuras', // Path yang dituju saat menu EAssesment diklik
               icon: 'cilLibraryAdd', // Ikonya bisa disesuaikan
+            },
+          ],
+        },
+        {
+          component: 'CNavGroup',
+          name: 'Delivery Management', // Nama menu untuk EAssesment
+          icon: 'cilTruck', // Ikonya bisa disesuaikan
+          items: [
+            {
+              component: 'CNavItem',
+              name: 'Master Kanban',
+              to: '/tool/kanban',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
             },
           ],
         },
