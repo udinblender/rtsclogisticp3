@@ -12,7 +12,7 @@
       </CInputGroup>
       <CInputGroup class="mb-1">
         <CInputGroupText style="width: 120px">
-          Process Desc
+          Process Desc.
         </CInputGroupText>
         <CFormInput disabled type="text" />
       </CInputGroup>
