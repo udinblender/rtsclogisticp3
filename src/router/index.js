@@ -55,41 +55,6 @@ const routes = [
       },
 
       {
-        path: '/tool/status',
-        name: 'ToolStatus',
-        component: () => import('@/views/TMS/ToolStatus.vue'),
-      },
-      {
-        path: '/tool/register',
-        name: 'ToolRegister',
-        component: () => import('@/views/TMS/ToolRegister.vue'),
-      },
-      {
-        path: '/tool/section',
-        name: 'ToolSection',
-        component: () => import('@/views/TMS/ToolSection.vue'),
-      },
-      {
-        path: '/tool/drawing',
-        name: 'MasterDrawing',
-        component: () => import('@/views/TMS/MasterDrawing.vue'),
-      },
-      {
-        path: '/tool/machine',
-        name: 'MasterMachine',
-        component: () => import('@/views/TMS/MasterMachine.vue'),
-      },
-      {
-        path: '/tool/distribution',
-        name: 'MasterDistribution',
-        component: () => import('@/views/TMS/MasterDistribution.vue'),
-      },
-      {
-        path: '/tool/system',
-        name: 'MasterSystem',
-        component: () => import('@/views/TMS/MasterSystem.vue'),
-      },
-      {
         path: '/planSchedule',
         name: 'PlanSchedule',
         component: () => import('@/views/PlanSchedule.vue'),
