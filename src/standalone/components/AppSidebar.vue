@@ -148,56 +148,6 @@ export default {
           items: [
             {
               component: 'CNavItem',
-              name: 'Tool Status',
-              to: '/tool/status',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Tools Section',
-              to: '/tool/section',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Register Tools',
-              to: '/tool/register',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Drawing',
-              to: '/tool/drawing',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Machine',
-              to: '/tool/machine',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Distribution',
-              to: '/tool/distribution',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master System',
-              to: '/tool/system',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-
-            {
-              component: 'CNavItem',
               name: 'Reservasi & Regrinding',
               to: '/tool',
               icon: 'cilSettings',
