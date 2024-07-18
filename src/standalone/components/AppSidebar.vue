@@ -174,6 +174,27 @@ export default {
               // icon: 'cilMap',
               parentId: 'ROOT',
             },
+            {
+              component: 'CNavItem',
+              name: 'Master Machine',
+              to: '/tool/machine',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Distribution',
+              to: '/tool/distribution',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master System',
+              to: '/tool/system',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
 
             {
               component: 'CNavItem',
@@ -217,8 +238,22 @@ export default {
           items: [
             {
               component: 'CNavItem',
-              name: 'Master Kanban',
-              to: '/tool/kanban',
+              name: 'Kanban Delivery',
+              to: '/delivery/kanban',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Data Tool',
+              to: '/delivery/dataTool',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Line',
+              to: '/delivery/masterLine',
               // icon: 'cilMap',
               parentId: 'ROOT',
             },

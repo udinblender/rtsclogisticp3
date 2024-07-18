@@ -390,7 +390,7 @@
                   data-bs-target="#modalMeasurement"
                   @click="addMeasurement(masterDrawing)"
                 >
-                  <i class="fas fa-edit"></i>
+                  <i class="fas fa-book"></i>
                 </button>
               </td>
               <td>

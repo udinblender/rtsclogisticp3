@@ -74,7 +74,21 @@ const routes = [
         name: 'MasterDrawing',
         component: () => import('@/views/TMS/MasterDrawing.vue'),
       },
-
+      {
+        path: '/tool/machine',
+        name: 'MasterMachine',
+        component: () => import('@/views/TMS/MasterMachine.vue'),
+      },
+      {
+        path: '/tool/distribution',
+        name: 'MasterDistribution',
+        component: () => import('@/views/TMS/MasterDistribution.vue'),
+      },
+      {
+        path: '/tool/system',
+        name: 'MasterSystem',
+        component: () => import('@/views/TMS/MasterSystem.vue'),
+      },
       {
         path: '/planSchedule',
         name: 'PlanSchedule',
@@ -92,11 +106,22 @@ const routes = [
         name: 'ScheduleKuras',
         component: () => import('@/views/MasterSchedule.vue'),
       },
+      {
+        path: '/delivery/kanban',
+        name: 'KanbanFromGel',
+        component: () => import('@/views/DeliveryManagement/KanbanFromGel.vue'),
+      },
 
       {
-        path: '/tool/kanban',
-        name: 'KanbanGel',
-        component: () => import('@/views/DeliveryManagement/KanbanGel.vue'),
+        path: '/delivery/dataTool',
+        name: 'MasterDataTool',
+        component: () =>
+          import('@/views/DeliveryManagement/MasterDataTool.vue'),
+      },
+      {
+        path: '/delivery/masterLine',
+        name: 'MasterGelLines',
+        component: () => import('@/views/DeliveryManagement/MasterLine.vue'),
       },
 
       /*define other in here*/
