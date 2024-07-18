@@ -181,34 +181,34 @@ export default {
             },
           ],
         },
-        {
-          component: 'CNavGroup',
-          name: 'Delivery Management', // Nama menu untuk EAssesment
-          icon: 'cilTruck', // Ikonya bisa disesuaikan
-          items: [
-            {
-              component: 'CNavItem',
-              name: 'Kanban Delivery',
-              to: '/delivery/kanban',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Data Tool',
-              to: '/delivery/dataTool',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Line',
-              to: '/delivery/masterLine',
-              // icon: 'cilMap',
-              parentId: 'ROOT',
-            },
-          ],
-        },
+        // {
+        //   component: 'CNavGroup',
+        //   name: 'Delivery Management', // Nama menu untuk EAssesment
+        //   icon: 'cilTruck', // Ikonya bisa disesuaikan
+        //   items: [
+        //     {
+        //       component: 'CNavItem',
+        //       name: 'Kanban Delivery',
+        //       to: '/delivery/kanban',
+        //       // icon: 'cilMap',
+        //       parentId: 'ROOT',
+        //     },
+        //     {
+        //       component: 'CNavItem',
+        //       name: 'Master Data Tool',
+        //       to: '/delivery/dataTool',
+        //       // icon: 'cilMap',
+        //       parentId: 'ROOT',
+        //     },
+        //     {
+        //       component: 'CNavItem',
+        //       name: 'Master Line',
+        //       to: '/delivery/masterLine',
+        //       // icon: 'cilMap',
+        //       parentId: 'ROOT',
+        //     },
+        //   ],
+        // },
         // {
         //   component: 'CNavItem',
         //   to: '/contoh',
