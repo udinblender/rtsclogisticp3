@@ -44,6 +44,7 @@ import { sygnet } from '@/standalone/assets/brand/sygnet'
 import utils from '@/utils/CommonUtils'
 import api from '@/apis/CommonAPI'
 import navtemplate from '@/_nav.js'
+import { CNavGroup } from '@coreui/vue'
 
 var strAuthorizedNav = ''
 var appAuthorized = {}
@@ -105,13 +106,6 @@ export default {
     return {
       nav: [
         {
-          component: 'CNavItem',
-          name: 'Home',
-          to: '/app/home',
-          icon: 'cilFactory',
-          parentId: 'ROOT',
-        },
-        {
           component: 'CNavGroup',
           name: 'Employee Management',
           icon: 'cilUser',
@@ -119,7 +113,7 @@ export default {
             {
               component: 'CNavItem',
               name: 'Absensi Karyawan',
-              to: '/dashboard',
+              to: '/app/dashboard',
               icon: 'cilCheckCircle',
               parentId: 'ROOT',
             },
@@ -148,6 +142,71 @@ export default {
         },
 
         {
+          componet: 'CNavGroup',
+          name: 'Tool Management', // Nama menu untuk EAssesment
+          icon: 'cilPencil', // Ikonya bisa disesuaikan
+          items: [
+            {
+              component: 'CNavItem',
+              name: 'Tool Status',
+              to: '/tool/status',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Tools Section',
+              to: '/tool/section',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Register Tools',
+              to: '/tool/register',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Drawing',
+              to: '/tool/drawing',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Machine',
+              to: '/tool/machine',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Distribution',
+              to: '/tool/distribution',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master System',
+              to: '/tool/system',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+
+            {
+              component: 'CNavItem',
+              name: 'Reservasi & Regrinding',
+              to: '/tool',
+              icon: 'cilSettings',
+              parentId: 'ROOT',
+            },
+          ],
+        },
+
+        {
           component: 'CNavGroup',
           name: 'Coolant Management', // Nama menu untuk EAssesment
           icon: 'cilPencil', // Ikonya bisa disesuaikan
@@ -169,6 +228,34 @@ export default {
               name: 'Master Schedule', // Nama menu untuk EAssesment
               to: '/ScheduleKuras', // Path yang dituju saat menu EAssesment diklik
               icon: 'cilLibraryAdd', // Ikonya bisa disesuaikan
+            },
+          ],
+        },
+        {
+          component: 'CNavGroup',
+          name: 'Delivery Management', // Nama menu untuk EAssesment
+          icon: 'cilTruck', // Ikonya bisa disesuaikan
+          items: [
+            {
+              component: 'CNavItem',
+              name: 'Kanban Delivery',
+              to: '/delivery/kanban',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Data Tool',
+              to: '/delivery/dataTool',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
+            },
+            {
+              component: 'CNavItem',
+              name: 'Master Line',
+              to: '/delivery/masterLine',
+              // icon: 'cilMap',
+              parentId: 'ROOT',
             },
           ],
         },

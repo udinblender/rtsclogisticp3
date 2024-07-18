@@ -57,6 +57,24 @@
                 @change="submitData('reservasi')"
               />
             </div>
+            <div class="col mt-2">
+              <label for="">Endmill</label>
+              <input
+                class="form-control"
+                type="text"
+                id="endmill"
+                v-model="endmill"
+                @change="submitData('reservasi')"
+              />
+              <label for="">Brush</label>
+              <input
+                class="form-control"
+                type="text"
+                id="brush"
+                v-model="brush"
+                @change="submitData('reservasi')"
+              />
+            </div>
           </div>
           <!-- row -->
         </div>
@@ -76,8 +94,11 @@
   </div>
   <div class="container-fluid mt-2">
     <div class="card p-2">
-      <div class="row mt-3" style="text-align: center">
-        <h2 for="regDrill">Regrinding Tool</h2>
+      <div class="card-header">
+        <h2 class="text-center">Shift : {{ currenthShift }}</h2>
+      </div>
+      <div class="row mt-2" style="text-align: center">
+        <h3 for="regDrill">Regrinding Tool</h3>
         <div class="col-3">
           <h3>Waktu</h3>
           <div class="row">
@@ -94,22 +115,38 @@
           </div>
           <div class="row mt-2">
             <div class="col">
-              <label for="regDrill">07.30 ~ 11.45</label>
+              <label for="regDrill">Delivery Ke-1</label>
               <input
                 class="form-control"
                 type="text"
                 id="regDrill"
-                v-model="morning"
+                v-model="delivery1"
+                @change="submitData('regrinding')"
+              />
+              <label for="">Delivery Ke-3</label>
+              <input
+                class="form-control"
+                type="text"
+                id="regDrill"
+                v-model="delivery3"
                 @change="submitData('regrinding')"
               />
             </div>
             <div class="col">
-              <label for="regReamer">12.30 ~ 16.00</label>
+              <label for="regReamer">Delivery Ke-2</label>
               <input
                 class="form-control"
                 type="text"
                 id="regReamer"
-                v-model="afterLunch"
+                v-model="delivery2"
+                @change="submitData('regrinding')"
+              />
+              <label for="">Delivery Ke-4</label>
+              <input
+                class="form-control"
+                type="text"
+                id="regReamer"
+                v-model="delivery4"
                 @change="submitData('regrinding')"
               />
             </div>
@@ -143,18 +180,25 @@ export default {
     apexchart: VueApexCharts,
   },
   data() {
-    const currentMonth = moment().format('MMMM YYYY')
+    const currentMonth = moment().locale('id').format('MMMM YYYY')
+    const currentDate = moment().format('DD-MM-YYYY')
     return {
       currenthShift: '',
+
       drill: null,
       reamer: null,
       tap: null,
       insert: null,
+      endmill: null,
+      brush: null,
       regDrill: null,
       regReamer: null,
       regTap: null,
-      morning: null,
-      afterLunch: null,
+      delivery1: null,
+      delivery2: null,
+      delivery3: null,
+      delivery4: null,
+      datesInMonth: moment().daysInMonth(),
       reservasiDate: moment().format('DD-MM-YYYY'),
       lineChartOptions: {
         chart: {
@@ -178,7 +222,7 @@ export default {
           },
         },
         title: {
-          text: `Total Reservasi - ${currentMonth}`,
+          text: `Reservasi Bulan : ${currentMonth}`,
           align: 'center',
           style: {
             fontSize: '15px',
@@ -260,11 +304,8 @@ export default {
         },
       },
       lineChartSeries: [
-        {
-          name: 'Total Reservasi',
-          Red: [], // Values of total drill + reamer + tap + insert
-          White: [],
-        },
+        { name: 'Shift Red', data: [] }, // Series untuk Shift Red
+        { name: 'Shift White', data: [] }, // Series untuk Shift White
       ],
       regLineChartOptions: {
         chart: {
@@ -288,7 +329,7 @@ export default {
           },
         },
         title: {
-          text: `Total Regrinding - ${currentMonth}`,
+          text: `Regrinding Tanggal : ${currentDate}`,
           align: 'center',
           style: {
             fontSize: '15px',
@@ -370,11 +411,8 @@ export default {
         },
       },
       regLineChartSeries: [
-        {
-          name: 'Total Regrinding',
-          Red: [], // Values of total drill + reamer + tap + insert
-          White: [],
-        },
+        { name: 'Shift Red', data: [] }, // Initialize correctly
+        { name: 'Shift White', data: [] }, // Initialize correctly
       ],
     }
   },
@@ -388,28 +426,33 @@ export default {
     ]),
   },
   watch: {
-    // Watcher untuk perubahan shift
-    currenthShift(newShift, oldShift) {
+    getCurrentShift(newShift, oldShift) {
       if (newShift !== oldShift) {
-        this.resetForm()
-        // Panggil ActionGetReservasi dengan shift baru
+        this.currenthShift = newShift
+        this.resetForm() // Reset form untuk shift baru
         this.$store.dispatch('ActionGetReservasi', newShift)
+        this.$store.dispatch('ActionGetRegrinding', newShift)
       }
     },
+
     getReservasi: {
       handler(newVal) {
         if (newVal) {
           const today = moment().format('YYYY-MM-DD')
-          console.log('today', today)
+          const shift = this.getCurrentShift
+          // console.log('shift', shift)
           const reservasiDate = moment(newVal.reservasi_dt).format('YYYY-MM-DD')
-          console.log('reservasiDate', reservasiDate)
+          // console.log('reservasiDate', reservasiDate)
 
-          if (reservasiDate === today) {
+          if (reservasiDate === today && shift === newVal.shift) {
             this.drill = newVal.drill || ''
             this.reamer = newVal.reamer || ''
             this.tap = newVal.tap || ''
             this.insert = newVal.insert || ''
+            this.endmill = newVal.endmill || ''
+            this.brush = newVal.brush || ''
           }
+          // console.log('newVal', newVal)
         }
       },
       immediate: true,
@@ -420,16 +463,16 @@ export default {
       handler(newVal) {
         if (newVal) {
           const today = moment().format('YYYY-MM-DD')
-          // console.log('today', today)
+          const shift = this.getCurrentShift
           const regDate = moment(newVal.reg_dt).format('YYYY-MM-DD')
 
-          // console.log('regDate', regDate)
+          console.log('regDate', regDate)
 
-          if (regDate === today) {
-            this.morning = newVal.morning_ses || ''
-            // console.log('morning', this.morning)
-            this.afterLunch = newVal.afterlunch_ses || ''
-            // console.log('afterLunch', this.afterLunch)
+          if (regDate === today && shift === newVal.shift) {
+            this.delivery1 = newVal.delivery1 || ''
+            this.delivery2 = newVal.delivery2 || ''
+            this.delivery3 = newVal.delivery3 || ''
+            this.delivery4 = newVal.delivery4 || ''
           }
         }
       },
@@ -438,8 +481,8 @@ export default {
     },
     getGrafikReservasi: {
       handler(newVal) {
+        this.updateLineChartSeries()
         if (newVal) {
-          this.updateReservasiChart(newVal)
         }
       },
       immediate: true,
@@ -447,8 +490,8 @@ export default {
     },
     getGrafikRegrinding: {
       handler(newVal) {
+        this.updateRegLineChartSeries()
         if (newVal) {
-          this.updateRegrindingChart(newVal)
         }
       },
       immediate: true,
@@ -456,26 +499,53 @@ export default {
     },
   },
   mounted() {
+    this.updateChartOptions()
     this.$store.dispatch('ambilShift').then(() => {
       this.getShift()
-    })
-    this.$store.dispatch('ActionGetReservasi', this.currenthShift).then(() => {
-      if (!this.getGrafikReservasi || this.getGrafikReservasi.length === 0) {
-        this.$store.dispatch('ActionGetGrafikReservasi')
-      }
-      this.$store.dispatch('ActionGetRegrinding', this.currenthShift)
-      if (!this.getGrafikRegrinding || this.getGrafikRegrinding.length === 0) {
-        this.$store.dispatch('ActionGetGrafikRegrinding')
-      }
+      this.$store
+        .dispatch('ActionGetReservasi', this.getCurrentShift)
+        .then(() => {
+          this.$store.dispatch('ActionGetGrafikReservasi')
+        })
+      this.$store
+        .dispatch('ActionGetRegrinding', this.getCurrentShift)
+        .then(() => {
+          this.$store.dispatch('ActionGetGrafikRegrinding')
+        })
     })
   },
   methods: {
+    updateChartOptions() {
+      // Perbarui kategori x-axis dengan tanggal
+      this.lineChartOptions.xaxis.categories = this.getDatesInMonth()
+      this.regLineChartOptions.xaxis.categories = [
+        'Delivery 1',
+        'Delivery 2',
+        'Delivery 3',
+        'Delivery 4',
+      ]
+    },
+    // Method to generate dates for current month
+    getDatesInMonth() {
+      const startDate = moment().startOf('month')
+      const endDate = moment().endOf('month')
+      const dates = []
+      while (startDate.isBefore(endDate) || startDate.isSame(endDate)) {
+        dates.push(startDate.format('DD')) // Push dates in 'DD' format
+        startDate.add(1, 'days')
+      }
+      // console.log('dates', dates)
+      return dates
+    },
     getShift() {
       this.currenthShift = this.getCurrentShift
       // console.log('currenthShift', this.currenthShift)
     },
     async submitData(type) {
       try {
+        if (this.currenthShift === null) {
+          return alert('Pilih Shift Terlebih Dahulu')
+        }
         const reservasiDate = moment().format('YYYY-MM-DD')
         let payload = {}
         let endpoint = ''
@@ -486,21 +556,25 @@ export default {
             reamer: this.reamer,
             tap: this.tap,
             insert: this.insert,
+            endmill: this.endmill,
+            brush: this.brush,
             reservasiDate,
             shift: currenthShift,
           }
           endpoint = 'reservasi/add'
         } else if (type === 'regrinding') {
           payload = {
-            morning: this.morning,
-            afterlunch: this.afterLunch,
+            delivery1: this.delivery1,
+            delivery2: this.delivery2,
+            delivery3: this.delivery3,
+            delivery4: this.delivery4,
             reservasiDate,
             shift: this.currenthShift,
           }
           endpoint = 'regrinding/add'
         }
-        console.log('payload', payload)
-        console.log('endpoint', endpoint)
+        console.log('payload vue', payload)
+        // console.log('endpoint', endpoint)
         // Use axios or fetch to send data to backend
         await this.$store
           .dispatch('ActionSubmitData', { endpoint, payload })
@@ -520,60 +594,145 @@ export default {
       this.reamer = null
       this.tap = null
       this.insert = null
-      this.morning = null
-      this.afterLunch = null
+      this.endmill = null
+      this.brush = null
+      this.delivery1 = null
+      this.delivery2 = null
+      this.delivery3 = null
+      this.delivery4 = null
     },
-    updateReservasiChart(data) {
-      const daysInMonth = moment().daysInMonth()
-      const newData = { Red: [], White: [] }
+    updateLineChartSeries() {
+      const data = this.getGrafikReservasi
+      // console.log('data', data)
 
+      // Initialize objects to hold the sums for each shift and date
+      let shiftRedData = {}
+      let shiftWhiteData = {}
+
+      // Iterate over the data to sum values based on shift and date
       data.forEach((item) => {
-        const shiftData = {
-          drill: item.drill || 0,
-          reamer: item.reamer || 0,
-          tap: item.tap || 0,
-          insert: item.insert || 0,
-        }
+        const date = moment(item.reservasi_dt).format('DD') // Extract date in 'DD' format
+        const shift = item.shift
 
-        newData[item.shift].push(shiftData)
+        if (shift === 'Red') {
+          if (!shiftRedData[date]) {
+            shiftRedData[date] = {
+              drill: 0,
+              reamer: 0,
+              tap: 0,
+              insert: 0,
+              endmill: 0,
+              brush: 0,
+            }
+          }
+          shiftRedData[date].drill += item.drill || 0
+          shiftRedData[date].reamer += item.reamer || 0
+          shiftRedData[date].tap += item.tap || 0
+          shiftRedData[date].insert += item.insert || 0
+          shiftRedData[date].endmill += item.endmill || 0
+          shiftRedData[date].brush += item.brush || 0
+        } else if (shift === 'White') {
+          if (!shiftWhiteData[date]) {
+            shiftWhiteData[date] = {
+              drill: 0,
+              reamer: 0,
+              tap: 0,
+              insert: 0,
+              endmill: 0,
+              brush: 0,
+            }
+          }
+          shiftWhiteData[date].drill += item.drill || 0
+          shiftWhiteData[date].reamer += item.reamer || 0
+          shiftWhiteData[date].tap += item.tap || 0
+          shiftWhiteData[date].insert += item.insert || 0
+          shiftWhiteData[date].endmill += item.endmill || 0
+          shiftWhiteData[date].brush += item.brush || 0
+        }
       })
 
-      this.lineChartSeries.Red = this.aggregateData(newData.Red, daysInMonth)
-      this.lineChartSeries.White = this.aggregateData(
-        newData.White,
-        daysInMonth,
-      )
-    },
-    updateRegrindingChart(data) {
-      const daysInMonth = moment().daysInMonth()
-      const newData = { Red: [], White: [] }
+      // Convert the summed data into series format for ApexCharts
+      const dates = this.getDatesInMonth() // Get all dates in the current month
 
+      // Initialize arrays to hold series data
+      let shiftRedSeries = []
+      let shiftWhiteSeries = []
+
+      // Map dates to the corresponding data sums
+      dates.forEach((date) => {
+        const redData = shiftRedData[date] || {
+          drill: 0,
+          reamer: 0,
+          tap: 0,
+          insert: 0,
+          endmill: 0,
+          brush: 0,
+        }
+        const whiteData = shiftWhiteData[date] || {
+          drill: 0,
+          reamer: 0,
+          tap: 0,
+          insert: 0,
+          endmill: 0,
+          brush: 0,
+        }
+
+        shiftRedSeries.push(
+          redData.drill +
+            redData.reamer +
+            redData.tap +
+            redData.insert +
+            redData.endmill +
+            redData.brush,
+        )
+        shiftWhiteSeries.push(
+          whiteData.drill +
+            whiteData.reamer +
+            whiteData.tap +
+            whiteData.insert +
+            whiteData.endmill +
+            whiteData.brush,
+        )
+      })
+
+      // Update the series for the chart
+      this.lineChartSeries = [
+        { name: 'Shift Red', data: shiftRedSeries },
+        { name: 'Shift White', data: shiftWhiteSeries },
+      ]
+    },
+    updateRegLineChartSeries() {
+      const data = this.getGrafikRegrinding
+      // console.log('data', data)
+
+      // Initialize arrays to hold series data
+      let shiftRedSeries = [0, 0, 0, 0] // [Delivery 1, Delivery 2, Delivery 3, Delivery 4]
+      let shiftWhiteSeries = [0, 0, 0, 0] // [Delivery 1, Delivery 2, Delivery 3, Delivery 4]
+
+      // Iterate over the data to sum values based on shift and delivery
       data.forEach((item) => {
-        const shiftData = {
-          morning_ses: item.morning_ses || 0,
-          afterlunch_ses: item.afterlunch_ses || 0,
-        }
+        const shift = item.shift
 
-        newData[item.shift].push(shiftData)
-      })
-
-      this.regLineChartSeries.Red = this.aggregateData(newData.Red, daysInMonth)
-      this.regLineChartSeries.White = this.aggregateData(
-        newData.White,
-        daysInMonth,
-      )
-    },
-    aggregateData(data, daysInMonth) {
-      const aggregatedData = Array(daysInMonth).fill(0)
-
-      data.forEach((shiftData) => {
-        // Aggregate data for each day
-        for (let i = 0; i < daysInMonth; i++) {
-          aggregatedData[i] += shiftData[i] || 0
+        if (shift === 'Red') {
+          shiftRedSeries[0] += item.delivery1 || 0
+          shiftRedSeries[1] += item.delivery2 || 0
+          shiftRedSeries[2] += item.delivery3 || 0
+          shiftRedSeries[3] += item.delivery4 || 0
+        } else if (shift === 'White') {
+          shiftWhiteSeries[0] += item.delivery1 || 0
+          shiftWhiteSeries[1] += item.delivery2 || 0
+          shiftWhiteSeries[2] += item.delivery3 || 0
+          shiftWhiteSeries[3] += item.delivery4 || 0
         }
       })
 
-      return aggregatedData
+      // Update the series for the chart
+      this.regLineChartSeries = [
+        { name: 'Shift Red', data: shiftRedSeries },
+        { name: 'Shift White', data: shiftWhiteSeries },
+      ]
+
+      // console.log('regLineChartSeries', this.regLineChartSeries)
     },
   },
 }

@@ -22,15 +22,10 @@ const routes = [
             window.location.href = process.env.dc + '/#/sc/login'
             // return '/redirectingToLogin' // not important since redirecting
           }
-        : '/app/home',
+        : '/app/dashboard',
     children: [
       {
-        path: '/app/home',
-        name: 'DashboardTool',
-        component: () => import('@/views/DashboardTool.vue'),
-      },
-      {
-        path: '/dashboard',
+        path: '/app/dashboard',
         name: 'EAssignment',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -54,11 +49,46 @@ const routes = [
       },
 
       {
-        path: '/contoh',
-        name: 'contoh', // Nama submenu 2
-        component: () => import('@/views/contoh.vue'),
+        path: '/tool',
+        name: 'DashboardTool',
+        component: () => import('@/views/DashboardTool.vue'),
       },
 
+      {
+        path: '/tool/status',
+        name: 'ToolStatus',
+        component: () => import('@/views/TMS/ToolStatus.vue'),
+      },
+      {
+        path: '/tool/register',
+        name: 'ToolRegister',
+        component: () => import('@/views/TMS/ToolRegister.vue'),
+      },
+      {
+        path: '/tool/section',
+        name: 'ToolSection',
+        component: () => import('@/views/TMS/ToolSection.vue'),
+      },
+      {
+        path: '/tool/drawing',
+        name: 'MasterDrawing',
+        component: () => import('@/views/TMS/MasterDrawing.vue'),
+      },
+      {
+        path: '/tool/machine',
+        name: 'MasterMachine',
+        component: () => import('@/views/TMS/MasterMachine.vue'),
+      },
+      {
+        path: '/tool/distribution',
+        name: 'MasterDistribution',
+        component: () => import('@/views/TMS/MasterDistribution.vue'),
+      },
+      {
+        path: '/tool/system',
+        name: 'MasterSystem',
+        component: () => import('@/views/TMS/MasterSystem.vue'),
+      },
       {
         path: '/planSchedule',
         name: 'PlanSchedule',
@@ -75,6 +105,23 @@ const routes = [
         path: '/ScheduleKuras',
         name: 'ScheduleKuras',
         component: () => import('@/views/MasterSchedule.vue'),
+      },
+      {
+        path: '/delivery/kanban',
+        name: 'KanbanFromGel',
+        component: () => import('@/views/DeliveryManagement/KanbanFromGel.vue'),
+      },
+
+      {
+        path: '/delivery/dataTool',
+        name: 'MasterDataTool',
+        component: () =>
+          import('@/views/DeliveryManagement/MasterDataTool.vue'),
+      },
+      {
+        path: '/delivery/masterLine',
+        name: 'MasterGelLines',
+        component: () => import('@/views/DeliveryManagement/MasterLine.vue'),
       },
 
       /*define other in here*/

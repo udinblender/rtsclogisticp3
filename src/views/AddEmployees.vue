@@ -457,7 +457,7 @@ export default {
         console.log('Data karyawan yang akan ditambahkan:', this.newUser)
         // Logging untuk memeriksa apakah properti profile berisi URL atau tidak
         console.log('Profile value:', this.newUser.profile)
-
+        console.log(this.newUser)
         // Panggil aksi ActionTambahKaryawan dengan data karyawan yang baru
         await this.$store.dispatch('ActionTambahKaryawan', this.newUser)
 
