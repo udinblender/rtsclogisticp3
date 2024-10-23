@@ -1,37 +1,17 @@
 <template>
-  <CSidebar
-    class="bg-white"
-    position="fixed"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
-    @visible-change="
-      (event) =>
-        $store.commit({
-          type: 'updateSidebarVisible',
-          value: event,
-        })
-    "
-  >
+  <CSidebar position="fixed" :unfoldable="sidebarUnfoldable" :visible="sidebarVisible" @visible-change="
+    (event) =>
+      $store.commit({
+        type: 'updateSidebarVisible',
+        value: event,
+      })
+  ">
     <CSidebarBrand>
-      <img
-        src="../assets/brand/Toyota_logo.png"
-        class="img-fluid sidebar-brand-full"
-        width="200"
-        height="200"
-      />
-      <img
-        src="../assets/brand/Toyota_logo.png"
-        class="sidebar-brand-narrow"
-        width="36"
-        height="10"
-      />
+      <img src="../assets/brand/Toyota_logo.png" class="img-fluid sidebar-brand-full" width="200" height="200" />
+      <img src="../assets/brand/Toyota_logo.png" class="sidebar-brand-narrow" width="36" height="10" />
     </CSidebarBrand>
     <AppSidebarNav v-bind:nav="nav" />
-    <CSidebarToggler
-      id="SidebarToggler"
-      class="d-none d-lg-flex submenu-background"
-      @click="$store.commit('toggleUnfoldable')"
-    />
+    <CSidebarToggler id="SidebarToggler" class="d-none d-lg-flex" @click="$store.commit('toggleUnfoldable')" />
   </CSidebar>
 </template>
 
@@ -41,60 +21,41 @@ import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
 import { logoNegative } from '@/standalone/assets/brand/logo-negative'
 import { sygnet } from '@/standalone/assets/brand/sygnet'
-import utils from '@/utils/CommonUtils'
-import api from '@/apis/CommonAPI'
+import utils from "@/utils/CommonUtils"
+import api from "@/apis/CommonAPI"
 import navtemplate from '@/_nav.js'
-import { CNavGroup } from '@coreui/vue'
 
-var strAuthorizedNav = ''
-var appAuthorized = {}
+var strAuthorizedNav = '';
+var appAuthorized = {};
 const generateNav = async (newAuthorizedData, isChild) => {
-  strAuthorizedNav += '['
-  let newAuthorizedDataLength = newAuthorizedData.length
+  strAuthorizedNav += '[';
+  let newAuthorizedDataLength = (newAuthorizedData.length)
   for (var i = 0; i < newAuthorizedDataLength; i++) {
-    let currentNewAuthorizedData = newAuthorizedData[i]
-    if (
-      currentNewAuthorizedData.children &&
-      currentNewAuthorizedData.children.length > 0
-    ) {
-      strAuthorizedNav += '{'
-      strAuthorizedNav += ' "component": "CNavGroup",'
-      strAuthorizedNav +=
-        ' "name": "' +
-        (isChild ? '' : '') +
-        currentNewAuthorizedData.displayText +
-        '",'
-      strAuthorizedNav += ' "to": "' + currentNewAuthorizedData.path + '",'
-      strAuthorizedNav += ' "icon": "' + currentNewAuthorizedData.icon + '",'
-      strAuthorizedNav +=
-        ' "parentId": "' + currentNewAuthorizedData.parentId + '",'
+    let currentNewAuthorizedData = newAuthorizedData[i];
+    if (currentNewAuthorizedData.children && currentNewAuthorizedData.children.length > 0) {
+      strAuthorizedNav += '{';
+      strAuthorizedNav += ' "component": "CNavGroup",';
+      strAuthorizedNav += ' "name": "' + (isChild ? '' : '') + currentNewAuthorizedData.displayText + '",';
+      strAuthorizedNav += ' "to": "' + currentNewAuthorizedData.path + '",';
+      strAuthorizedNav += ' "icon": "' + (currentNewAuthorizedData.icon) + '",';
+      strAuthorizedNav += ' "parentId": "' + currentNewAuthorizedData.parentId + '",';
       strAuthorizedNav += ' "items": '
-      generateNav(currentNewAuthorizedData.children, true)
-      strAuthorizedNav += '},'
+      generateNav(currentNewAuthorizedData.children, true);
+      strAuthorizedNav += '},';
     } else {
-      strAuthorizedNav += '{'
-      strAuthorizedNav += ' "component": "CNavItem",'
-      strAuthorizedNav +=
-        ' "name": "' +
-        (isChild ? '' : '') +
-        currentNewAuthorizedData.displayText +
-        '",'
-      strAuthorizedNav += ' "to": "' + currentNewAuthorizedData.path + '",'
-      strAuthorizedNav += ' "icon": "' + currentNewAuthorizedData.icon + '",'
-      strAuthorizedNav +=
-        ' "parentId": "' + currentNewAuthorizedData.parentId + '",'
-      strAuthorizedNav +=
-        ' "applicationId": "' + currentNewAuthorizedData.applicationId + '",'
-      strAuthorizedNav +=
-        ' "linkProps": { "queryParams": { "applicationId": "' +
-        currentNewAuthorizedData.applicationId +
-        '", "functionId": "' +
-        currentNewAuthorizedData.functionId +
-        '" } }'
-      strAuthorizedNav += '},'
+      strAuthorizedNav += '{';
+      strAuthorizedNav += ' "component": "CNavItem",';
+      strAuthorizedNav += ' "name": "' + (isChild ? '' : '') + currentNewAuthorizedData.displayText + '",';
+      strAuthorizedNav += ' "to": "' + currentNewAuthorizedData.path + '",';
+      strAuthorizedNav += ' "icon": "' + (currentNewAuthorizedData.icon) + '",';
+      strAuthorizedNav += ' "parentId": "' + currentNewAuthorizedData.parentId + '",';
+      strAuthorizedNav += ' "applicationId": "' + currentNewAuthorizedData.applicationId + '",';
+      strAuthorizedNav += ' "linkProps": { "queryParams": { "applicationId": "' + currentNewAuthorizedData.applicationId
+        + '", "functionId": "' + currentNewAuthorizedData.functionId + '" } }';
+      strAuthorizedNav += '},';
     }
   }
-  strAuthorizedNav += ']'
+  strAuthorizedNav += ']';
 }
 
 export default {
@@ -106,113 +67,53 @@ export default {
     return {
       nav: [
         {
-          component: 'CNavGroup',
-          name: 'Employee Management',
-          icon: 'cilUser',
-          items: [
-            {
-              component: 'CNavItem',
-              name: 'Absensi Karyawan',
-              to: '/app/dashboard',
-              icon: 'cilCheckCircle',
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'History Absensi', // Nama menu untuk EAssesment
-              to: '/EAbsensi', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilHistory', // Ikonya bisa disesuaikan
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Mapping Job', // Nama menu untuk EAssesment
-              to: '/MappingJob', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilMap', // Ikonya bisa disesuaikan
-              parentId: 'ROOT',
-            },
-            {
-              component: 'CNavItem',
-              name: 'Data Karyawan', // Nama menu untuk EAssesment
-              to: '/AddEmployees', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilGroup', // Ikonya bisa disesuaikan
-              parentId: 'ROOT',
-            },
-          ],
+          component: 'CNavItem',
+          name: 'Home',
+          to: '/app/dashboard',
+          icon: 'cilHome',
+          parentId: 'ROOT',
         },
-
         {
-          componet: 'CNavGroup',
-          name: 'Tool Management', // Nama menu untuk EAssesment
-          icon: 'cilPencil', // Ikonya bisa disesuaikan
-          items: [
-            {
-              component: 'CNavItem',
-              name: 'Reservasi & Regrinding',
-              to: '/tool',
-              icon: 'cilSettings',
-              parentId: 'ROOT',
-            },
-          ],
+          component: 'CNavItem',
+          name: 'SPS',
+          to: '/app/andon/sps',
+          icon: 'cilFolder',
+          parentId: 'ROOT',
         },
-
+      
         {
-          component: 'CNavGroup',
-          name: 'Coolant Management', // Nama menu untuk EAssesment
-          icon: 'cilPencil', // Ikonya bisa disesuaikan
-          items: [
-            {
-              component: 'CNavItem',
-              name: 'Planing Kuras Coolant ', // Nama menu untuk EAssesment
-              to: '/planSchedule', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilCalendar', // Ikonya bisa disesuaikan
-            },
-            {
-              component: 'CNavItem',
-              name: 'History Coolant', // Nama menu untuk EAssesment
-              to: '/historyCoolant', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilHistory', // Ikonya bisa disesuaikan
-            },
-            {
-              component: 'CNavItem',
-              name: 'Master Schedule', // Nama menu untuk EAssesment
-              to: '/ScheduleKuras', // Path yang dituju saat menu EAssesment diklik
-              icon: 'cilLibraryAdd', // Ikonya bisa disesuaikan
-            },
-          ],
+          component: 'CNavItem',
+          name: 'P-Line',
+          to: '/app/andon/pline',
+          icon: 'cilStar',
+          parentId: 'ROOT',
         },
-        // {
-        //   component: 'CNavGroup',
-        //   name: 'Delivery Management', // Nama menu untuk EAssesment
-        //   icon: 'cilTruck', // Ikonya bisa disesuaikan
-        //   items: [
-        //     {
-        //       component: 'CNavItem',
-        //       name: 'Kanban Delivery',
-        //       to: '/delivery/kanban',
-        //       // icon: 'cilMap',
-        //       parentId: 'ROOT',
-        //     },
-        //     {
-        //       component: 'CNavItem',
-        //       name: 'Master Data Tool',
-        //       to: '/delivery/dataTool',
-        //       // icon: 'cilMap',
-        //       parentId: 'ROOT',
-        //     },
-        //     {
-        //       component: 'CNavItem',
-        //       name: 'Master Line',
-        //       to: '/delivery/masterLine',
-        //       // icon: 'cilMap',
-        //       parentId: 'ROOT',
-        //     },
-        //   ],
-        // },
+        {
+          component: 'CNavItem',
+          name: 'Import Part',
+          to: '/app/andon/importpart',
+          icon: 'cilBoatAlt',
+          parentId: 'ROOT',
+        },
+        
+        {
+          component: 'CNavItem',
+          name: 'Special Part',
+          to: '/app/specialPart',
+          icon: 'cilStar',
+          parentId: 'ROOT',
+        },
+        {
+          component: 'CNavItem',
+          name: 'Special Part',
+          to: '/app/specialPart/content',
+          icon: 'cilStar',
+          parentId: 'ROOT',
+        },
         // {
         //   component: 'CNavItem',
-        //   to: '/contoh',
-        //   name: 'Contoh',
+        //   to: '/qdc/quality-operational',
+        //   name: 'Quality Operational',
         //   icon: '',
         //   parentId: 'ROOT',
         // },
@@ -353,9 +254,3 @@ export default {
   // }
 }
 </script>
-
-<style>
-.submenu-background {
-  background-color: #f8f9fa !important;
-}
-</style>

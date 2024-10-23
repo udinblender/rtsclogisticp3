@@ -1,3 +1,5 @@
+
+
 import './set-public-path'
 import { h, createApp } from 'vue'
 import singleSpaVue from 'single-spa-vue'
@@ -5,7 +7,6 @@ import singleSpaVue from 'single-spa-vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import $ from 'jquery'
 
 import CoreuiVue from '@coreui/vue'
 import CIcon from '@coreui/icons-vue'
@@ -16,11 +17,11 @@ import './styles/sweetalert2.css'
 import 'vue-select/dist/vue-select.css'
 import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
-import VCalendar from 'v-calendar'
-import 'v-calendar/style.css'
-if (process.env.VUE_APP_STANDALONE_SINGLE_SPA === 'true') {
-  require('@/components/StandAloneStyle.vue')
-} else {
+import VCalendar from 'v-calendar';
+import 'v-calendar/style.css';
+if(process.env.VUE_APP_STANDALONE_SINGLE_SPA==='true'){
+  require('@/components/StandAloneStyle.vue');
+}else{
   require('@/components/SingleSpaStyle.vue')
 }
 const vueLifecycles = singleSpaVue({
@@ -42,14 +43,13 @@ const vueLifecycles = singleSpaVue({
   handleInstance(app) {
     app.use(router)
     app.use(store)
-    app.config.globalProperties.$ = $
     app.use(CoreuiVue)
     app.provide('icons', icons)
     app.use(VueSweetalert2)
     app.component('CIcon', CIcon)
     app.component('v-select', vSelect)
     app.use(HighchartsVue, {
-      highcharts: Highcharts,
+      highcharts: Highcharts
     })
     app.use(VCalendar, {})
   },
